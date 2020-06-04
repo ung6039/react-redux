@@ -10,10 +10,15 @@ app.all('/*',function (req,res,next) {
 app.listen(3355,()=>{
     console.log("Server Start","http://localhost:3355")
 })
-
 const request= require("request")
 const xml2js = require("xml2js")
-
+const path =require('path')
+// public 디렉터리의 내용을 자동으로 응답합니다. --- (※3)
+app.use('/', express.static('./public'))
+// 최상위 페이지에 접속하면 /public으로 리다이렉트합니다.
+app.get('/', function (request, response) {
+    response.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+})
 app.get('/news',(req,res)=>{
     var fd = encodeURIComponent(req.query.fd)
     var url ="http://newssearch.naver.com/search.naver?where=rss&query="+fd;
